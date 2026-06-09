@@ -14,9 +14,3 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-
-#define IS31FL3731_I2C_ADDRESS_1 IS31FL3731_I2C_ADDRESS_GND
-#define IS31FL3731_SDB_PIN D2
-#define IS31FL3731_IRQ_PIN D3
-
-#define POWER_LED_PIN F1
