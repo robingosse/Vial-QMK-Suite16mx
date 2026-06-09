@@ -1,2 +1,2 @@
-# Processor frequency
-F_CPU = 8000000
+MCU = RP2040
+BOOTLOADER = rp2040
