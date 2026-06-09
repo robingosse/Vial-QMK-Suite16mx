@@ -100,8 +100,8 @@
         "sleep": true
     },
     "diode_direction": "COL2ROW",
-    "processor": "atmega32u4",
-    "bootloader": "atmel-dfu",
+    "processor": "RP2040",
+    "bootloader": "rp2040",
     "layouts": {
         "LAYOUT_ortho_4x8": {
             "layout": [
