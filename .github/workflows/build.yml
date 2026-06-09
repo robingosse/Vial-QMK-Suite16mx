@@ -1,0 +1,41 @@
+name: Build Suite16mx Firmware
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container: qmkfm/qmk_cli
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Mark repo as safe
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Compile opendeck 32 default
+        run: |
+          qmk compile -kb opendeck/32/rev1 -km default
+
+      - name: List build output
+        run: |
+          find .build -type f || true
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: suite16mx-test-firmware
+          path: |
+            .build/*.uf2
+            .build/*.hex
+            .build/*.bin
+            *.uf2
+            *.hex
+            *.bin
