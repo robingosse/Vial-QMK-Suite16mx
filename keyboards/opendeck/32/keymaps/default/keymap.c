@@ -18,10 +18,10 @@
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_ortho_4x8(
-        LSFT(KC_A), LSFT(KC_B), LSFT(KC_C), LCTL(KC_D), LCTL(KC_E), LCTL(KC_F), LALT(KC_G), LALT(KC_H),
-        LSFT(KC_I), LSFT(KC_J), LSFT(KC_K), LCTL(KC_L), LCTL(KC_M), LCTL(KC_N), LALT(KC_O), LALT(KC_P),
-        LSFT(KC_Q), LSFT(KC_R), LSFT(KC_S), LCTL(KC_T), LCTL(KC_U), LCTL(KC_V), LALT(KC_W), LALT(KC_X),
-        LSFT(KC_Y), LSFT(KC_Z), LSFT(KC_1), LCTL(KC_2), LCTL(KC_3), LCTL(KC_4), LALT(KC_5), LALT(KC_6)
+        LSFT(KC_A), LSFT(KC_Q), LSFT(KC_A), LCTL(KC_Z), LCTL(KC_E), LCTL(KC_F), LALT(KC_G), LALT(KC_H),
+        LSFT(KC_I), LSFT(KC_W), LSFT(KC_S), LCTL(KC_X), LCTL(KC_M), LCTL(KC_N), LALT(KC_O), LALT(KC_P),
+        LSFT(KC_Q), LSFT(KC_E), LSFT(KC_D), LCTL(KC_C), LCTL(KC_U), LCTL(KC_V), LALT(KC_W), LALT(KC_X),
+        LSFT(KC_Y), LSFT(KC_R), LSFT(KC_F), LCTL(KC_V), LCTL(KC_3), LCTL(KC_4), LALT(KC_5), LALT(KC_6)
     )
 };
 // clang-format on
