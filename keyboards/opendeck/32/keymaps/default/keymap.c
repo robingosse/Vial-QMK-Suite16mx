@@ -22,10 +22,10 @@ void keyboard_post_init_user(void) {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_ortho_4x8(
-        LSFT(KC_A), LSFT(KC_Q), LSFT(KC_A), LCTL(KC_Z), LCTL(KC_E), LCTL(KC_F), LALT(KC_G), LALT(KC_H),
-        LSFT(KC_I), LSFT(KC_W), LSFT(KC_S), LCTL(KC_X), LCTL(KC_M), LCTL(KC_N), LALT(KC_O), LALT(KC_P),
-        LSFT(KC_B), LSFT(KC_E), LSFT(KC_D), LCTL(KC_C), LCTL(KC_U), LCTL(KC_V), LALT(KC_W), LALT(KC_X),
-        LSFT(KC_Y), LSFT(KC_R), LSFT(KC_F), LCTL(KC_V), LCTL(KC_3), LCTL(KC_4), LALT(KC_5), LALT(KC_6)
+        KC_(KC_A), KC_(KC_Q), KC_(KC_A), KC_(KC_Z), KC_(KC_E), KC_(KC_F), KC_(KC_G), KC_(KC_H),
+        KC_(KC_I), KC_(KC_W), KC_(KC_S), KC_(KC_X), KC_(KC_M), KC_(KC_N), KC_(KC_O), KC_(KC_P),
+        KC_(KC_B), KC_(KC_E), KC_(KC_D), KC_(KC_C), KC_(KC_U), KC_(KC_V), KC_(KC_W), KC_(KC_X),
+        KC_(KC_Y), KC_(KC_R), KC_(KC_F), KC_(KC_V), KC_(KC_3), KC_(KC_4), KC_(KC_5), KC_(KC_6)
     )
 };
 // clang-format on
