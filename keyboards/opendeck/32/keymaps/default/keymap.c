@@ -15,6 +15,10 @@
  */
 #include QMK_KEYBOARD_H
 
+void keyboard_post_init_user(void) {
+    eeconfig_init();
+}
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_ortho_4x8(
