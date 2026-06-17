@@ -16,6 +16,23 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
+      - name: Sanity check keyboard files
+        run: |
+          echo "=== keyboard.json ==="
+          cat keyboards/opendeck/32/rev1/keyboard.json
+      
+          echo "=== parent info.json ==="
+          cat keyboards/opendeck/32/info.json
+      
+          echo "=== keymap config.h ==="
+          cat keyboards/opendeck/32/rev1/keymaps/vial/config.h
+      
+          echo "=== vial.json ==="
+          cat keyboards/opendeck/32/rev1/keymaps/vial/vial.json
+      
+          echo "=== keymap rules.mk ==="
+          cat keyboards/opendeck/32/rev1/keymaps/vial/rules.mk
+
       - name: Mark repo as safe
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
