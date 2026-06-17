@@ -2,8 +2,8 @@
     "keyboard_name": "OpenDeck32",
     "manufacturer": "OpenDeck",
     "usb": {
-        "vid": "0x4345",
-        "pid": "0x2EC0",
+        "vid": "0xFEED",
+        "pid": "0x1616",
         "device_version": "0.0.1",
         "force_nkro": true
     }
