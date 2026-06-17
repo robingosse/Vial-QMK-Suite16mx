@@ -22,7 +22,7 @@ jobs:
 
       - name: Compile opendeck 32 default
         run: |
-          qmk compile -kb opendeck/32/rev1 -km default
+          make opendeck/32/rev1:vial
 
       - name: List build output
         run: |
