@@ -10,18 +10,21 @@
         "lto": true
     },
 
-    "features": {
-        "bootmagic": true,
-        "extrakey": true,
-        "mousekey": true,
-        "nkro": true,
-        "rgb_matrix": false,
-        "rgblight": false,
-        "backlight": false,
-        "oled": false,
-        "encoder": false,
-        "audio": false
-    },
+"features": {
+    "bootmagic": true,
+    "extrakey": true,
+    "mousekey": true,
+    "nkro": true,
+    "via": true,
+    "vial": true,
+    "rgb_matrix": false,
+    "rgblight": false,
+    "backlight": false,
+    "oled": false,
+    "encoder": false,
+    "audio": false,
+    "led_matrix": false
+}
 
     "diode_direction": "ROW2COL",
 
