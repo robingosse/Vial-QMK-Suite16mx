@@ -24,7 +24,7 @@
     "encoder": false,
     "audio": false,
     "led_matrix": false
-}
+},
 
     "vial": {
     "keyboard_uid": "526F62696E313658",
@@ -32,7 +32,7 @@
         [0, 2],
         [0, 3]
     ]
-}
+},
 
     "diode_direction": "ROW2COL",
 
