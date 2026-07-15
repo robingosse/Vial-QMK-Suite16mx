@@ -1,6 +1,6 @@
 {
-    "keyboard_name": "OpenDeck32",
-    "manufacturer": "OpenDeck",
+    "keyboard_name": "7-Key-Rotary-Macro",
+    "manufacturer": "Robin Gosse",
     "usb": {
         "vid": "0xFEED",
         "pid": "0x1616",
