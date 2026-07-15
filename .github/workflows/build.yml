@@ -1,4 +1,4 @@
-name: Build Suite16mx Firmware
+name: Build Custom Keyboard Firmware
 
 on:
   workflow_dispatch:
