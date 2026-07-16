@@ -1,6 +1,6 @@
 {
     "manufacturer": "Robin Gosse",
-    "keyboard_name": "Suite16mx",
+    "keyboard_name": "7-Key+Rotary",
     "maintainer": "robingosse",
 
     "processor": "RP2040",
@@ -39,7 +39,7 @@
             }
         ]
     }
-}
+},
 
     "layouts": {
         "LAYOUT": {
