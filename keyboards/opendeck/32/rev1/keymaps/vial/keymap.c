@@ -1,12 +1,34 @@
 #include QMK_KEYBOARD_H
 
-// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT_ortho_4x8(
-KC_R,    KC_E,    KC_W,    KC_Q,    KC_I,    KC_U,    KC_Y,    KC_T,
-KC_F,    KC_D,    KC_S,    KC_A,    KC_SCLN, KC_L,    KC_K,    KC_J,
-KC_V,    KC_C,    KC_X,    KC_Z,    KC_COMM, KC_M,    KC_N,    KC_B,
-KC_G,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_H
+    [0] = LAYOUT(
+        KC_1, KC_2, KC_3, KC_MUTE,
+        KC_4, KC_5, KC_6, KC_7
+    ),
+
+    [1] = LAYOUT(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+
+    [2] = LAYOUT(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+
+    [3] = LAYOUT(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 };
-// clang-format on
+
+#if defined(ENCODER_MAP_ENABLE)
+
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [1] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
+    [2] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
+    [3] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
+};
+
+#endif
