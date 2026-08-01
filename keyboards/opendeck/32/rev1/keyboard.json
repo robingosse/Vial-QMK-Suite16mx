@@ -36,8 +36,8 @@
 
     "matrix_pins": {
         "direct": [
-            ["GP4", "GP5", "GP6", "GP9"],
-            ["GP3", "GP2", "GP1", "GP0"]
+            ["GP0", "GP1", "GP2", "GP9"],
+            ["GP3", "GP4", "GP5", "GP6"]
         ]
     },
 
