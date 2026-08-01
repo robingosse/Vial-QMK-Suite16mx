@@ -1,6 +1,6 @@
 {
     "manufacturer": "Gosse & Co.",
-    "keyboard_name": "7-Key+Rotary",
+    "keyboard_name": "7-Key + Rotary Macropad",
     "maintainer": "robingosse",
 
     "processor": "RP2040",
@@ -11,10 +11,10 @@
     },
 
     "vial": {
-        "keyboard_uid": "526F62696E313658",
+        "keyboard_uid": "526F62696E313659",
         "unlock_combo": [
-            [1, 0],
-            [1, 3]
+            [0, 0],
+            [1, 0]
         ]
     },
 
@@ -24,8 +24,8 @@
 
     "matrix_pins": {
         "direct": [
-            ["GP6", "GP5", "GP4", "GP11"],
-            ["GP3", "GP2", "GP1", "GP0"]
+            ["GP0", "GP1", "GP2", "GP9"],
+            ["GP3", "GP4", "GP5", "GP6"]
         ]
     },
 
@@ -34,7 +34,6 @@
             {
                 "pin_a": "GP7",
                 "pin_b": "GP8",
-                "pin_sw": "GP9",
                 "resolution": 4
             }
         ]
@@ -43,10 +42,10 @@
     "layouts": {
         "LAYOUT": {
             "layout": [
-                { "matrix": [0, 0], "x": 0, "y": 0 },
-                { "matrix": [0, 1], "x": 1, "y": 0 },
-                { "matrix": [0, 2], "x": 2, "y": 0 },
-                { "matrix": [0, 3], "x": 3, "y": 0 },
+                { "matrix": [0, 3], "x": 0, "y": 0 },
+                { "matrix": [0, 0], "x": 1, "y": 0 },
+                { "matrix": [0, 1], "x": 2, "y": 0 },
+                { "matrix": [0, 2], "x": 3, "y": 0 },
 
                 { "matrix": [1, 0], "x": 0, "y": 1 },
                 { "matrix": [1, 1], "x": 1, "y": 1 },
