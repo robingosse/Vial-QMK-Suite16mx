@@ -19,7 +19,8 @@
     },
 
     "features": {
-        "encoder": true
+        "encoder": true,
+        "extrakey": true
     },
 
     "matrix_pins": {
