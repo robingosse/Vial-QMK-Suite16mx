@@ -2,6 +2,13 @@ name: Build Custom Keyboard Firmware
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - "keyboards/opendeck/32/**"
+      - ".github/workflows/build.yml"
+  push:
+    branches:
+      - trackpoint-authority-audit
 
 jobs:
   build:
@@ -16,39 +23,52 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
-      - name: Sanity check keyboard files
+      - name: Mark repo as safe
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Show audited TrackPoint configuration
         run: |
           echo "=== keyboard.json ==="
           cat keyboards/opendeck/32/rev1/keyboard.json
-      
-          echo "=== parent info.json ==="
-          cat keyboards/opendeck/32/info.json
-      
-          echo "=== keymap config.h ==="
-          cat keyboards/opendeck/32/rev1/keymaps/vial/config.h
-      
-          echo "=== vial.json ==="
-          cat keyboards/opendeck/32/rev1/keymaps/vial/vial.json
-      
+          echo "=== revision config.h ==="
+          cat keyboards/opendeck/32/rev1/config.h
           echo "=== keymap rules.mk ==="
           cat keyboards/opendeck/32/rev1/keymaps/vial/rules.mk
+          echo "=== keymap pre-init diagnostic hook ==="
+          grep -n -A6 -B2 "keyboard_pre_init_user" keyboards/opendeck/32/rev1/keymaps/vial/keymap.c
 
-      - name: Mark repo as safe
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Compile audited Vial firmware
+        run: make opendeck/32/rev1:vial
 
-      - name: Compile opendeck 32 default
+      - name: Verify generated PS2 build configuration
+        shell: bash
         run: |
-          make opendeck/32/rev1:vial
+          set -euo pipefail
+          build_src=".build/obj_opendeck_32_rev1_vial/src"
+          rules_file="$build_src/info_rules.mk"
+          config_file="$build_src/info_config.h"
+
+          test -f "$rules_file"
+          test -f "$config_file"
+
+          echo "=== generated PS2 rules ==="
+          grep -E '^PS2_' "$rules_file"
+          echo "=== generated PS2 pins ==="
+          grep -E 'PS2_(DATA|CLOCK)_PIN' "$config_file"
+
+          grep -Eq '^PS2_DRIVER[[:space:]]*[?:]?=[[:space:]]*vendor$' "$rules_file"
+          grep -Eq '^PS2_ENABLE[[:space:]]*[?:]?=[[:space:]]*yes$' "$rules_file"
+          grep -Eq '^PS2_MOUSE_ENABLE[[:space:]]*[?:]?=[[:space:]]*yes$' "$rules_file"
+          grep -Eq '#[[:space:]]*define[[:space:]]+PS2_DATA_PIN[[:space:]]+GP14' "$config_file"
+          grep -Eq '#[[:space:]]*define[[:space:]]+PS2_CLOCK_PIN[[:space:]]+GP15' "$config_file"
 
       - name: List build output
-        run: |
-          find .build -type f || true
+        run: find .build -type f \( -name '*.uf2' -o -name '*.hex' -o -name '*.bin' \) -print
 
-      - name: Upload firmware
+      - name: Upload diagnostic firmware
         uses: actions/upload-artifact@v4
         with:
-          name: suite16mx-test-firmware
+          name: suite16mx-trackpoint-diagnostic
           path: |
             .build/*.uf2
             .build/*.hex
