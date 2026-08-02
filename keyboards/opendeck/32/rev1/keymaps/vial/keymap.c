@@ -1,5 +1,11 @@
 #include QMK_KEYBOARD_H
 
+void keyboard_post_init_user(void) {
+    /* Make PS/2 initialization and packet diagnostics visible in qmk console. */
+    debug_enable = true;
+    debug_mouse  = true;
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
         KC_1, KC_2, KC_3, KC_MUTE,
