@@ -56,9 +56,9 @@ jobs:
           echo "=== generated PS2 pins ==="
           grep -E 'PS2_(DATA|CLOCK)_PIN' "$config_file"
 
-          grep -Eq '^PS2_DRIVER[[:space:]]*:?=[[:space:]]*vendor$' "$rules_file"
-          grep -Eq '^PS2_ENABLE[[:space:]]*:?=[[:space:]]*yes$' "$rules_file"
-          grep -Eq '^PS2_MOUSE_ENABLE[[:space:]]*:?=[[:space:]]*yes$' "$rules_file"
+          grep -Eq '^PS2_DRIVER[[:space:]]*[?:]?=[[:space:]]*vendor$' "$rules_file"
+          grep -Eq '^PS2_ENABLE[[:space:]]*[?:]?=[[:space:]]*yes$' "$rules_file"
+          grep -Eq '^PS2_MOUSE_ENABLE[[:space:]]*[?:]?=[[:space:]]*yes$' "$rules_file"
           grep -Eq '#[[:space:]]*define[[:space:]]+PS2_DATA_PIN[[:space:]]+GP14' "$config_file"
           grep -Eq '#[[:space:]]*define[[:space:]]+PS2_CLOCK_PIN[[:space:]]+GP15' "$config_file"
 
