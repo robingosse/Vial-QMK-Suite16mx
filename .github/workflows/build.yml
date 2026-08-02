@@ -34,8 +34,8 @@ jobs:
           cat keyboards/opendeck/32/rev1/config.h
           echo "=== keymap rules.mk ==="
           cat keyboards/opendeck/32/rev1/keymaps/vial/rules.mk
-          echo "=== keymap.c diagnostic hook ==="
-          grep -n -A6 -B2 "keyboard_post_init_user" keyboards/opendeck/32/rev1/keymaps/vial/keymap.c
+          echo "=== keymap pre-init diagnostic hook ==="
+          grep -n -A6 -B2 "keyboard_pre_init_user" keyboards/opendeck/32/rev1/keymaps/vial/keymap.c
 
       - name: Compile audited Vial firmware
         run: make opendeck/32/rev1:vial
