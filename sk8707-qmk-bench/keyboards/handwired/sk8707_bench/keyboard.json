@@ -1,0 +1,37 @@
+{
+    "keyboard_name": "SK8707 RP2040 Bench",
+    "manufacturer": "Robin Gosse",
+    "maintainer": "robingosse",
+    "board": "GENERIC_RP_RP2040",
+    "bootloader": "rp2040",
+    "processor": "RP2040",
+    "features": {
+        "bootmagic": true,
+        "extrakey": true,
+        "mousekey": true
+    },
+    "ps2": {
+        "clock_pin": "GP15",
+        "data_pin": "GP14",
+        "driver": "vendor",
+        "enabled": true,
+        "mouse_enabled": true
+    },
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x8707",
+        "vid": "0xFEED"
+    },
+    "diode_direction": "COL2ROW",
+    "matrix_pins": {
+        "rows": ["GP0"],
+        "cols": ["GP1"]
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0}
+            ]
+        }
+    }
+}
