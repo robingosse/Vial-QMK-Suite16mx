@@ -17,7 +17,7 @@ This repository pins that exact proven QMK commit:
 
 - `josch/qmk_firmware@56d908063fc2641c6257c13ad23b8f072cb37579`
 
-The keyboard definition changes only the board-specific pins to match this bench unit.
+The keyboard definition changes only the board-specific pins to match this bench unit. GitHub Actions also verifies the pinned commit and all three core behaviours before it will upload a UF2.
 
 ## Wiring
 
