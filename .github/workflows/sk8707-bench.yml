@@ -8,6 +8,10 @@ on:
     paths:
       - "sk8707-qmk-bench/**"
       - ".github/workflows/sk8707-bench.yml"
+  pull_request:
+    paths:
+      - "sk8707-qmk-bench/**"
+      - ".github/workflows/sk8707-bench.yml"
 
 jobs:
   build:
