@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
 
-void keyboard_post_init_user(void) {
-    /* Make PS/2 initialization and packet diagnostics visible in qmk console. */
+void keyboard_pre_init_user(void) {
+    /* Enable diagnostics before ps2_mouse_init() performs reset/BAT/DevID. */
     debug_enable = true;
     debug_mouse  = true;
 }
