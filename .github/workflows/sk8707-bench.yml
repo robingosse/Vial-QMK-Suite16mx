@@ -1,0 +1,88 @@
+name: Build SK8707 QMK Bench
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - sk8707-qmk-bench
+    paths:
+      - "sk8707-qmk-bench/**"
+      - ".github/workflows/sk8707-bench.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: qmkfm/qmk_cli
+
+    steps:
+      - name: Checkout bench files
+        uses: actions/checkout@v4
+        with:
+          path: bench-repo
+
+      - name: Checkout proven SK8707 QMK commit
+        uses: actions/checkout@v4
+        with:
+          repository: josch/qmk_firmware
+          ref: 56d908063fc2641c6257c13ad23b8f072cb37579
+          path: qmk_firmware
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Mark repositories safe
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/bench-repo"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/qmk_firmware"
+
+      - name: Verify pinned core patches
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd qmk_firmware
+          test "$(git rev-parse HEAD)" = "56d908063fc2641c6257c13ad23b8f072cb37579"
+          grep -q 'ps2_host_power_on_reset' drivers/ps2/ps2.h
+          grep -q 'ps2_host_power_on_reset();' drivers/ps2/ps2_mouse.c
+          grep -q 'PAL_RP_PAD_PUE' platforms/chibios/drivers/vendor/RP/RP2040/ps2_vendor.c
+          if grep -Eq '^[[:space:]]*PS2_MOUSE_SEND\(PS2_MOUSE_RESET' drivers/ps2/ps2_mouse.c; then
+            echo "Software PS/2 reset is still active; refusing to build."
+            exit 1
+          fi
+
+      - name: Install bench keyboard into QMK
+        run: |
+          mkdir -p qmk_firmware/keyboards/handwired
+          cp -R bench-repo/sk8707-qmk-bench/keyboards/handwired/sk8707_bench \
+            qmk_firmware/keyboards/handwired/
+
+      - name: Compile minimal firmware
+        working-directory: qmk_firmware
+        run: make handwired/sk8707_bench:default
+
+      - name: Verify generated pin configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          config_file="qmk_firmware/.build/obj_handwired_sk8707_bench_default/src/info_config.h"
+          rules_file="qmk_firmware/.build/obj_handwired_sk8707_bench_default/src/info_rules.mk"
+          test -f "$config_file"
+          test -f "$rules_file"
+          grep -Eq '#[[:space:]]*define[[:space:]]+PS2_DATA_PIN[[:space:]]+GP14' "$config_file"
+          grep -Eq '#[[:space:]]*define[[:space:]]+PS2_CLOCK_PIN[[:space:]]+GP15' "$config_file"
+          grep -Eq '^PS2_DRIVER[[:space:]]*[?:]?=[[:space:]]*vendor$' "$rules_file"
+          grep -Eq '^PS2_MOUSE_ENABLE[[:space:]]*[?:]?=[[:space:]]*yes$' "$rules_file"
+          grep -q '#define PS2_RESET_PIN GP26' qmk_firmware/keyboards/handwired/sk8707_bench/config.h
+
+      - name: Stage firmware artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifact
+          find qmk_firmware/.build -maxdepth 1 -type f -name '*.uf2' -exec cp {} artifact/ \;
+          test -n "$(find artifact -maxdepth 1 -type f -name '*.uf2' -print -quit)"
+          ls -lh artifact
+
+      - name: Upload UF2
+        uses: actions/upload-artifact@v4
+        with:
+          name: sk8707-rp2040-bench
+          path: artifact/*.uf2
