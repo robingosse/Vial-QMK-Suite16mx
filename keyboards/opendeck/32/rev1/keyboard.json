@@ -1,6 +1,6 @@
 {
     "manufacturer": "Robin Gosse",
-    "keyboard_name": "Suite16mx",
+    "keyboard_name": "Suite16mx DIAGNOSTIC R72",
     "maintainer": "robingosse",
 
     "processor": "RP2040",
@@ -27,7 +27,7 @@
     },
 
     "vial": {
-        "keyboard_uid": "526F62696E313659",
+        "keyboard_uid": "52424E3136443732",
         "unlock_combo": [
             [0, 1],
             [0, 0]
@@ -44,7 +44,7 @@
     "usb": {
         "vid": "0xFEED",
         "pid": "0x1616",
-        "device_version": "0.0.2"
+        "device_version": "0.0.72"
     },
 
     "layouts": {
