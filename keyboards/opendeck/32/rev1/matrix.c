@@ -1,25 +1,21 @@
 #include "matrix.h"
 #include "gpio.h"
 #include "wait.h"
+#include "timer.h"
 
 // Suite16mx bring-up diagnostic scanner.
 //
-// This deliberately ignores the declared row/column matrix and diode direction.
-// It tests every directed pair among every signal GPIO exposed by the RP2040-Zero
-// footprint used on this Suite16mx: GP0..GP15 and GP26..GP29.
+// This build provides TWO independent signals in Vial Matrix Tester:
+//   [0,0] = firmware heartbeat, toggles automatically every 500 ms
+//   [0,1] = physical GPIO-pair detection
 //
-// There is no TrackPoint and no rotary encoder on this model, so no GPIOs are
-// reserved for either feature during this diagnostic.
+// The heartbeat proves that this custom matrix scanner is compiled, running,
+// debounced by QMK, and reaching Vial. The physical detector independently tests
+// every directed pair among all signal GPIOs exposed by the RP2040-Zero footprint:
+// GP0..GP15 and GP26..GP29.
 //
-// All candidate pins are normally inputs with pull-ups; one pin at a time is
-// driven low while every other candidate pin is sampled. Because every pin gets
-// a turn as the low-side driver, a switch+diode connection can be detected
-// regardless of diode orientation.
-//
-// Any detected connection is reported as matrix position [0,0]. With the current
-// Vial test keymap that position emits KC_R. Therefore: if ANY physical key causes
-// the Vial Matrix Tester's [0,0] key to light (or types R), the PCB switch network
-// is electrically reaching at least two exposed MCU GPIOs.
+// There is no TrackPoint and no rotary encoder on this Suite16mx model, so no
+// signal GPIOs are reserved during this diagnostic.
 
 static const pin_t diagnostic_pins[] = {
     GP0, GP1, GP2, GP3, GP4, GP5, GP6, GP7,
@@ -29,6 +25,10 @@ static const pin_t diagnostic_pins[] = {
 
 #define DIAGNOSTIC_PIN_COUNT (sizeof(diagnostic_pins) / sizeof(diagnostic_pins[0]))
 #define DIAGNOSTIC_SETTLE_US 30
+#define HEARTBEAT_INTERVAL_MS 500
+
+static uint32_t heartbeat_timer;
+static bool heartbeat_on;
 
 static void diagnostic_release_all(void) {
     for (uint8_t i = 0; i < DIAGNOSTIC_PIN_COUNT; i++) {
@@ -38,17 +38,23 @@ static void diagnostic_release_all(void) {
 
 void matrix_init_custom(void) {
     diagnostic_release_all();
+    heartbeat_timer = timer_read32();
+    heartbeat_on = false;
 }
 
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     bool any_connection = false;
+
+    if (timer_elapsed32(heartbeat_timer) >= HEARTBEAT_INTERVAL_MS) {
+        heartbeat_timer = timer_read32();
+        heartbeat_on = !heartbeat_on;
+    }
 
     diagnostic_release_all();
 
     for (uint8_t drive = 0; drive < DIAGNOSTIC_PIN_COUNT && !any_connection; drive++) {
         const pin_t drive_pin = diagnostic_pins[drive];
 
-        // Preload the output latch low before enabling output mode.
         gpio_write_pin_low(drive_pin);
         gpio_set_pin_output_push_pull(drive_pin);
         wait_us(DIAGNOSTIC_SETTLE_US);
@@ -64,15 +70,19 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
             }
         }
 
-        // Return the driven pin to a high-impedance pulled-up state.
         gpio_set_pin_input_high(drive_pin);
     }
 
-    // Keep the exposed QMK matrix simple: any electrical pair closure becomes
-    // one synthetic key at row 0, column 0. Everything else is forced released.
-    const matrix_row_t new_row0 = any_connection ? (matrix_row_t)1 : (matrix_row_t)0;
-    bool changed = current_matrix[0] != new_row0;
+    // [0,0] heartbeat, [0,1] physical connection detector.
+    matrix_row_t new_row0 = 0;
+    if (heartbeat_on) {
+        new_row0 |= ((matrix_row_t)1 << 0);
+    }
+    if (any_connection) {
+        new_row0 |= ((matrix_row_t)1 << 1);
+    }
 
+    bool changed = current_matrix[0] != new_row0;
     current_matrix[0] = new_row0;
 
     for (uint8_t row = 1; row < MATRIX_ROWS; row++) {
