@@ -1,6 +1,6 @@
 {
     "manufacturer": "Robin Gosse",
-    "keyboard_name": "Suite16mx PINMAP TEST R82",
+    "keyboard_name": "Suite16mx SLAVE COUPLING R83",
     "maintainer": "robingosse",
 
     "processor": "RP2040",
@@ -27,7 +27,7 @@
     },
 
     "vial": {
-        "keyboard_uid": "52424E3136523832",
+        "keyboard_uid": "52424E3136523833",
         "unlock_combo": [
             [0, 1],
             [0, 0]
@@ -44,7 +44,7 @@
     "usb": {
         "vid": "0xFEED",
         "pid": "0x1616",
-        "device_version": "0.8.2"
+        "device_version": "0.8.3"
     },
 
     "layouts": {
