@@ -2,26 +2,37 @@
 #include "gpio.h"
 #include "wait.h"
 
-// Suite16mx GPIO pair mapper.
+// Suite16mx R83 multi-endpoint coupling diagnostic.
 //
-// This diagnostic ignores the declared matrix topology and scans every directed
-// pair among all signal GPIOs exposed by the RP2040-Zero footprint:
-// GP0..GP15 and GP26..GP29.
+// Purpose: determine whether a single physical keypress electrically couples
+// more than one row/column GPIO on the real keyboard, especially on the slave
+// half. Unlike the earlier pair mapper, this scanner DOES NOT stop after the
+// first detected pair. It records every candidate GPIO that participates in
+// any conductive path while a key is held.
 //
-// When a physical switch closure is found, BOTH GPIO endpoints are exposed as
-// synthetic QMK matrix keys. Candidate index N maps to flattened matrix position N:
-//   0..7   -> row 0, cols 0..7
-//   8..15  -> row 1, cols 0..7
-//   16..19 -> row 2, cols 0..3
+// Candidate index -> synthetic matrix position -> diagnostic keycode:
+//   0  GP27 -> [0,0] -> R
+//   1  GP28 -> [0,1] -> E
+//   2  GP26 -> [0,2] -> W
+//   3  GP29 -> [0,3] -> Q
+//   4  GP12 -> [0,4] -> I
+//   5  GP13 -> [0,5] -> U
+//   6  GP14 -> [0,6] -> Y
+//   7  GP15 -> [0,7] -> T
+//   8  GP0  -> [1,0] -> F
+//   9  GP1  -> [1,1] -> D
+//   10 GP2  -> [1,2] -> S
+//   11 GP3  -> [1,3] -> A
 //
-// With the existing Suite16mx test keymap this gives a printable two-character
-// signature for each physical switch, allowing the real PCB matrix wiring to be
-// reconstructed without opening the keyboard.
+// A healthy single switch should therefore expose exactly TWO diagnostic
+// endpoints: one row GPIO (R/E/W/Q) and one column GPIO (I/U/Y/T/F/D/S/A).
+// Three or more simultaneous endpoints prove electrical coupling outside the
+// normal one-row/one-column switch path.
 
 static const pin_t diagnostic_pins[] = {
-    GP0, GP1, GP2, GP3, GP4, GP5, GP6, GP7,
-    GP8, GP9, GP10, GP11, GP12, GP13, GP14, GP15,
-    GP26, GP27, GP28, GP29,
+    GP27, GP28, GP26, GP29,
+    GP12, GP13, GP14, GP15,
+    GP0,  GP1,  GP2,  GP3,
 };
 
 #define DIAGNOSTIC_PIN_COUNT (sizeof(diagnostic_pins) / sizeof(diagnostic_pins[0]))
@@ -38,12 +49,14 @@ void matrix_init_custom(void) {
 }
 
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
-    int8_t endpoint_a = -1;
-    int8_t endpoint_b = -1;
+    bool active[DIAGNOSTIC_PIN_COUNT] = {false};
 
     diagnostic_release_all();
 
-    for (uint8_t drive = 0; drive < DIAGNOSTIC_PIN_COUNT && endpoint_a < 0; drive++) {
+    // Drive each candidate low in turn and sample every other candidate.
+    // Because every pin gets a turn as the driver, diode direction does not
+    // matter for discovery of a conductive switch path.
+    for (uint8_t drive = 0; drive < DIAGNOSTIC_PIN_COUNT; drive++) {
         const pin_t drive_pin = diagnostic_pins[drive];
 
         gpio_write_pin_low(drive_pin);
@@ -56,23 +69,23 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
             }
 
             if (!gpio_read_pin(diagnostic_pins[sense])) {
-                endpoint_a = (int8_t)drive;
-                endpoint_b = (int8_t)sense;
-                break;
+                active[drive] = true;
+                active[sense] = true;
             }
         }
 
         gpio_set_pin_input_high(drive_pin);
+        wait_us(DIAGNOSTIC_SETTLE_US);
     }
 
     matrix_row_t new_matrix[MATRIX_ROWS] = {0};
 
-    if (endpoint_a >= 0 && endpoint_b >= 0) {
-        const uint8_t a = (uint8_t)endpoint_a;
-        const uint8_t b = (uint8_t)endpoint_b;
-
-        new_matrix[a / MATRIX_COLS] |= ((matrix_row_t)1 << (a % MATRIX_COLS));
-        new_matrix[b / MATRIX_COLS] |= ((matrix_row_t)1 << (b % MATRIX_COLS));
+    // Flatten the twelve endpoint indicators into the first twelve matrix
+    // positions: row 0 cols 0..7, then row 1 cols 0..3.
+    for (uint8_t i = 0; i < DIAGNOSTIC_PIN_COUNT; i++) {
+        if (active[i]) {
+            new_matrix[i / MATRIX_COLS] |= ((matrix_row_t)1 << (i % MATRIX_COLS));
+        }
     }
 
     bool changed = false;
