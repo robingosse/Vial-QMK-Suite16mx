@@ -1,7 +1,13 @@
-name: Build Custom Keyboard Firmware
+name: Build Suite16mx Firmware
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "keyboards/opendeck/32/**"
+      - ".github/workflows/build.yml"
 
 jobs:
   build:
@@ -20,16 +26,19 @@ jobs:
         run: |
           echo "=== keyboard.json ==="
           cat keyboards/opendeck/32/rev1/keyboard.json
-      
+
           echo "=== parent info.json ==="
           cat keyboards/opendeck/32/info.json
-      
+
           echo "=== keymap config.h ==="
           cat keyboards/opendeck/32/rev1/keymaps/vial/config.h
-      
+
+          echo "=== keymap.c ==="
+          cat keyboards/opendeck/32/rev1/keymaps/vial/keymap.c
+
           echo "=== vial.json ==="
           cat keyboards/opendeck/32/rev1/keymaps/vial/vial.json
-      
+
           echo "=== keymap rules.mk ==="
           cat keyboards/opendeck/32/rev1/keymaps/vial/rules.mk
 
@@ -37,7 +46,7 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Compile opendeck 32 default
+      - name: Compile Suite16mx Vial firmware
         run: |
           make opendeck/32/rev1:vial
 
