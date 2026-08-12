@@ -12,12 +12,12 @@
 
     "features": {
         "bootmagic": true,
-        "extrakey": true,
-        "mousekey": true,
+        "extrakey": false,
+        "mousekey": false,
         "nkro": true,
         "via": true,
         "vial": true,
-        "encoder": true,
+        "encoder": false,
         "rgb_matrix": false,
         "rgblight": false,
         "backlight": false,
@@ -39,24 +39,7 @@
             ["GP0", "GP1", "GP2", "GP9"],
             ["GP3", "GP4", "GP5", "GP6"]
         ]
-    },
-
-    "encoder": {
-        "rotary": [
-            {
-                "pin_a": "GP7",
-                "pin_b": "GP8",
-                "resolution": 4
-            }
-        ]
-    },
-
-    "ps2": {
-        "clock_pin": "GP15",
-        "data_pin": "GP14",
-        "driver": "vendor",
-        "enabled": true,
-        "mouse_enabled": true
+    
     },
 
     "usb": {
