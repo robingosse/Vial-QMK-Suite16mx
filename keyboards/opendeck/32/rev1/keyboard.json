@@ -1,6 +1,6 @@
 {
     "manufacturer": "Robin Gosse",
-    "keyboard_name": "Suite16mx PINMAP TEST R80",
+    "keyboard_name": "Suite16mx PINMAP TEST R81",
     "maintainer": "robingosse",
 
     "processor": "RP2040",
@@ -27,14 +27,14 @@
     },
 
     "vial": {
-        "keyboard_uid": "52424E3136523830",
+        "keyboard_uid": "52424E3136523831",
         "unlock_combo": [
             [0, 1],
             [0, 0]
         ]
     },
 
-    "diode_direction": "ROW2COL",
+    "diode_direction": "COL2ROW",
 
     "matrix_pins": {
         "rows": ["GP12", "GP13", "GP14", "GP15"],
@@ -44,7 +44,7 @@
     "usb": {
         "vid": "0xFEED",
         "pid": "0x1616",
-        "device_version": "0.8.0"
+        "device_version": "0.8.1"
     },
 
     "layouts": {
