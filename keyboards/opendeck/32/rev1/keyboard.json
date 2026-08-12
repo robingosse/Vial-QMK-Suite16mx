@@ -34,7 +34,7 @@
         ]
     },
 
-    "diode_direction": "ROW2COL",
+    "diode_direction": "COL2ROW",
 
     "matrix_pins": {
         "rows": ["GP5", "GP6", "GP7", "GP8"],
