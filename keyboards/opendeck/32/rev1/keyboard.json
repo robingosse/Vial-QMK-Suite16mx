@@ -1,6 +1,6 @@
 {
     "manufacturer": "Robin Gosse",
-    "keyboard_name": "Suite16mx FINAL TEST R85",
+    "keyboard_name": "Suite16mx FINAL TEST R86",
     "maintainer": "robingosse",
 
     "processor": "RP2040",
@@ -27,7 +27,7 @@
     },
 
     "vial": {
-        "keyboard_uid": "52424E3136523835",
+        "keyboard_uid": "52424E3136523836",
         "unlock_combo": [
             [0, 1],
             [0, 0]
@@ -44,7 +44,7 @@
     "usb": {
         "vid": "0xFEED",
         "pid": "0x1616",
-        "device_version": "0.8.5"
+        "device_version": "0.8.6"
     },
 
     "layouts": {
@@ -83,9 +83,9 @@
                 {"matrix": [3, 2], "x": 5, "y": 2, "r": 20, "rx": 4, "ry": 3},
                 {"matrix": [3, 3], "x": 6, "y": 2, "r": 20, "rx": 4, "ry": 3},
 
-                {"matrix": [3, 4], "x": 10, "y": 2, "r": -20, "rx": 11, "ry": 3},
+                {"matrix": [3, 4], "x": 8, "y": 2, "r": -20, "rx": 11, "ry": 3},
                 {"matrix": [3, 5], "x": 9, "y": 2, "r": -20, "rx": 11, "ry": 3},
-                {"matrix": [3, 6], "x": 8, "y": 2, "r": -20, "rx": 11, "ry": 3},
+                {"matrix": [3, 6], "x": 10, "y": 2, "r": -20, "rx": 11, "ry": 3},
 
                 {"matrix": [3, 7], "x": 10, "y": 1}
             ]
